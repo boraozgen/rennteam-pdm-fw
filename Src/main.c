@@ -70,7 +70,8 @@ ADC_HandleTypeDef hadc4;
 
 CAN_HandleTypeDef hcan;
 
-osThreadId defaultTaskHandle;
+osThreadId measurementTaskHandle;
+osThreadId fuseTaskHandle;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -83,7 +84,8 @@ static void MX_ADC2_Init(void);
 static void MX_ADC3_Init(void);
 static void MX_ADC4_Init(void);
 static void MX_CAN_Init(void);
-void StartDefaultTask(void const * argument);
+void StartMeasurementTask(void const * argument);
+void StartFuseTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -144,9 +146,13 @@ int main(void)
   /* USER CODE END RTOS_TIMERS */
 
   /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  /* definition and creation of measurementTask */
+  osThreadDef(measurementTask, StartMeasurementTask, osPriorityNormal, 0, 128);
+  measurementTaskHandle = osThreadCreate(osThread(measurementTask), NULL);
+
+  /* definition and creation of fuseTask */
+  osThreadDef(fuseTask, StartFuseTask, osPriorityNormal, 0, 128);
+  fuseTaskHandle = osThreadCreate(osThread(fuseTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -567,23 +573,78 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_StartMeasurementTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the measurementTask thread.
   * @param  argument: Not used 
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
+/* USER CODE END Header_StartMeasurementTask */
+void StartMeasurementTask(void const * argument)
 {
 
   /* USER CODE BEGIN 5 */
+  uint8_t i = 0;
+  uint8_t currentsMapped[CHANNEL_COUNT];
+  uint8_t batVoltageMapped;
+  uint8_t temperatureMapped;
+  uint8_t currentFrameA_data[CURRENT_FRAME_A_SIZE];
+  uint8_t currentFrameB_data[CURRENT_FRAME_B_SIZE];
+  uint8_t statusFrame_data[STATUS_FRAME_SIZE];
+
+  if (!AdcDrv_init()) {
+	  Error_Handler();
+  }
+
+  if (!CanDrv_init()) {
+      Error_Handler();
+  }
+
+  /* Infinite loop */
+  for(;;) {
+      osDelayUntil(500);
+
+      /* Read ADC channels */
+      for (uint8_t channel=0; channel<CHANNEL_COUNT; channel++) {
+    	  currentsUint8[channel] = AdcDrv_readCurrentMapped(channel);
+      }
+      batVoltageMapped = AdcDrv_readBatVoltageMapped();
+      temperatureMapped = AdcDrv_readTemperatureMapped();
+
+      /* Prepare CAN frames */
+      for (i=0; i<CURRENT_FRAME_A_SIZE; i++) {
+          currentFrameA_data[i] = currentsUint8[i];
+      }
+      for (i=0; i<CURRENT_FRAME_B_SIZE; i++) {
+    	  currentFrameB_data[i] = currentsUint8[i+8];
+      }
+      statusFrame_data[0] = batVoltageMapped;
+      statusFrame_data[1] = temperatureMapped;
+
+      /* Send CAN frames */
+      CanDrv_sendCurrentFrameA(currentFrameA_data);
+      CanDrv_sendCurrentFrameB(currentFrameB_data);
+      CanDrv_sendStatusFrame(statusFrame_data);
+  }
+  /* USER CODE END 5 */ 
+}
+
+/* USER CODE BEGIN Header_StartFuseTask */
+/**
+* @brief Function implementing the fuseTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartFuseTask */
+void StartFuseTask(void const * argument)
+{
+  /* USER CODE BEGIN StartFuseTask */
   /* Infinite loop */
   for(;;)
   {
     osDelay(1);
   }
-  /* USER CODE END 5 */ 
+  /* USER CODE END StartFuseTask */
 }
 
 /**
