@@ -15,6 +15,7 @@
 #define CURRENT_FRAME_B_SIZE	7
 #define STATUS_FRAME_SIZE		3
 
+int App_init(void);
 int App_turnOffChannel(uint8_t channel, uint32_t time_ms);
 
 #endif /* APP_H_ */

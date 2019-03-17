@@ -7,44 +7,84 @@
 
 #include "AdcDrv.h"
 #include "stm32f3xx_hal.h"
+#include "main.h"
 
 extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc2;
 extern ADC_HandleTypeDef hadc3;
 extern ADC_HandleTypeDef hadc4;
 
+__IO uint16_t   ADC1ConvertedValues[ADC1_CH_COUNT];
+__IO uint16_t   ADC2ConvertedValues[ADC2_CH_COUNT];
+__IO uint16_t   ADC3ConvertedValues[ADC3_CH_COUNT];
+__IO uint16_t   ADC4ConvertedValues[ADC4_CH_COUNT];
+
 int AdcDrv_init(void)
 {
-	if (HAL_OK !=  HAL_ADC_Start(&hadc1)) {
+	if (HAL_OK !=  HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADC1ConvertedValues, ADC1_CH_COUNT)) {
 		return -1;
 	}
 
-	if (HAL_OK !=  HAL_ADC_Start(&hadc2)) {
+	if (HAL_OK !=  HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADC2ConvertedValues, ADC2_CH_COUNT)) {
 		return -1;
 	}
 
-	if (HAL_OK !=  HAL_ADC_Start(&hadc3)) {
+	if (HAL_OK !=  HAL_ADC_Start_DMA(&hadc3, (uint32_t *)ADC3ConvertedValues, ADC3_CH_COUNT)) {
 		return -1;
 	}
 
-	if (HAL_OK !=  HAL_ADC_Start(&hadc4)) {
+	if (HAL_OK !=  HAL_ADC_Start_DMA(&hadc4, (uint32_t *)ADC4ConvertedValues, ADC4_CH_COUNT)) {
 		return -1;
 	}
 
 	return 0;
 }
 
+extern float testFuseCurrent;
+
 float AdcDrv_readCurrent(uint8_t channel)
 {
-	uint32_t adcValue = 0;
+	uint16_t adcValue = 0;
+	float retVal = 0.0;
 
-	if (HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
-		adcValue = HAL_ADC_GetValue(&hadc1);
-	} else {
-		return -1;
+	switch (channel) {
+	case 0:
+		//adcValue = ADC4ConvertedValues[5]; // Test, channel 1
+		retVal = testFuseCurrent;
+		break;
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		break;
+	case 6:
+		break;
+	case 7:
+		break;
+	case 8:
+		break;
+	case 9:
+		break;
+	case 10:
+		break;
+	case 11:
+		break;
+	case 12:
+		break;
+	case 13:
+		break;
+	case 14:
+		break;
+	default:
+		Error_Handler();
 	}
 
-	return adcValue;
+	return retVal;
 }
 
 uint8_t AdcDrv_readCurrentMapped(uint8_t channel)

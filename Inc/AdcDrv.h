@@ -10,6 +10,11 @@
 
 #include "stdint.h"
 
+#define ADC1_CH_COUNT	4
+#define ADC2_CH_COUNT	2
+#define ADC3_CH_COUNT	6
+#define ADC4_CH_COUNT	6
+
 int AdcDrv_init(void);
 float AdcDrv_readCurrent(uint8_t channel);
 uint8_t AdcDrv_readCurrentMapped(uint8_t channel);
