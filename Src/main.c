@@ -79,6 +79,8 @@ CAN_HandleTypeDef hcan;
 osThreadId measurementTaskHandle;
 osThreadId fuseTaskHandle;
 osThreadId testTaskHandle;
+
+extern App_channel_t App_channels[CHANNEL_COUNT];
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -785,9 +787,6 @@ void StartFuseTask(void const * argument)
 {
   /* USER CODE BEGIN StartFuseTask */
 	float current;
-	float fuseCurrent[CHANNEL_COUNT] = {0};
-
-	fuseCurrent[0] = 10.0; // Test
 
   /* Infinite loop */
   for(;;)
@@ -798,8 +797,13 @@ void StartFuseTask(void const * argument)
     for (uint8_t ch=0; ch<CHANNEL_COUNT; ch++) {
     	current = AdcDrv_readCurrent(ch);
 
-    	if (current > fuseCurrent[ch]) {
-    		App_turnOffChannel(ch, 1000);
+    	/* Check if fuse current is exceeded */
+    	if (current > App_channels[ch].fuse_current) {
+    		/* Turn off channel */
+    		App_turnOffChannel(ch);
+
+        	/* Send fuse message to CAN bus */
+        	CanDrv_sendFuseMessage(ch);
     	}
     }
   }
@@ -812,7 +816,7 @@ void StartFuseTask(void const * argument)
 * @param argument: Not used
 * @retval None
 */
-float testFuseCurrent = 0.0;
+
 /* USER CODE END Header_StartTestTask */
 void StartTestTask(void const * argument)
 {
@@ -820,19 +824,20 @@ void StartTestTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(3000);
-
-    testFuseCurrent = 15.0;
-
-    // Turn on red LED
-    HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4, GPIO_PIN_SET);
-
-    osDelay(100);
-
-    HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4, GPIO_PIN_RESET);
-
-    testFuseCurrent = 5.0;
-
+	  HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4, GPIO_PIN_RESET);
+	  *(App_channels[CH1].adc_value_ptr) = 0;
+	  *(App_channels[CH2].adc_value_ptr) = 0;
+	  *(App_channels[CH3].adc_value_ptr) = 0;
+	  *(App_channels[CH4].adc_value_ptr) = 0;
+	  *(App_channels[CH5].adc_value_ptr) = 0;
+	  osDelay(3000);
+	  HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4, GPIO_PIN_SET);
+	  *(App_channels[CH1].adc_value_ptr) = 2000;
+	  *(App_channels[CH2].adc_value_ptr) = 2000;
+	  *(App_channels[CH3].adc_value_ptr) = 2000;
+	  *(App_channels[CH4].adc_value_ptr) = 2000;
+	  *(App_channels[CH5].adc_value_ptr) = 2000;
+	  osDelay(100);
   }
   /* USER CODE END StartTestTask */
 }
