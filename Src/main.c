@@ -79,9 +79,9 @@ CAN_HandleTypeDef hcan;
 osThreadId measurementTaskHandle;
 osThreadId fuseTaskHandle;
 osThreadId testTaskHandle;
+/* USER CODE BEGIN PV */
 
 extern App_channel_t App_channels[CHANNEL_COUNT];
-/* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
 

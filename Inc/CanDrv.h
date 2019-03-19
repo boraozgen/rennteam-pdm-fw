@@ -10,6 +10,30 @@
 
 #include "stdint.h"
 
+/* Frame IDs */
+#define CANDRV_ID_CURRENT_A		0x500
+#define CANDRV_ID_CURRENT_B		0x501
+#define CANDRV_ID_STATUS		0x502
+#define CANDRV_ID_EVENT			0x503
+
+/* Frame DLCs */
+#define CANDRV_DLC_CURRENT_A	8
+#define CANDRV_DLC_CURRENT_B	7
+#define CANDRV_DLC_STATUS		3
+#define CANDRV_DLC_EVENT		2
+
+/* Event frame indexes */
+#define CANDRV_EVENT_TYPE		0
+#define CANDRV_EVENT_CHANNEL	1
+
+/* Status frame indexes */
+#define CANDRV_STATUS_TEMP		0
+#define CANDRV_STATUS_VBAT		1
+#define CANDRV_STATUS_CODE		2
+
+/* Event frame defines */
+#define CANDRV_EVENT_TYPE_FUSE	0
+
 int CanDrv_init(void);
 int CanDrv_sendCurrentFrameA(uint8_t* currentFrameA_data);
 int CanDrv_sendCurrentFrameB(uint8_t* currentFrameB_data);
