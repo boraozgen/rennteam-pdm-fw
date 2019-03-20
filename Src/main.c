@@ -727,29 +727,33 @@ void StartMeasurementTask(void const * argument)
 
   /* USER CODE BEGIN 5 */
   uint8_t i = 0;
-  uint8_t currentsMapped[CHANNEL_COUNT];
-  uint8_t batVoltageMapped;
-  uint8_t temperatureMapped;
-  uint8_t currentFrameA_data[CURRENT_FRAME_A_SIZE];
-  uint8_t currentFrameB_data[CURRENT_FRAME_B_SIZE];
-  uint8_t statusFrame_data[STATUS_FRAME_SIZE];
+  uint8_t currentsMapped[CHANNEL_COUNT] = {0};
+  uint8_t batVoltageMapped = 0;
+  uint8_t temperatureMapped = 0;
+  uint8_t currentFrameA_data[CURRENT_FRAME_A_SIZE] = {0};
+  uint8_t currentFrameB_data[CURRENT_FRAME_B_SIZE] = {0};
+  uint8_t statusFrame_data[STATUS_FRAME_SIZE] = {0};
   TickType_t xLastWakeTime = xTaskGetTickCount();
 
+  /* Initialize ADC driver */
   if (AdcDrv_init()) {
 	  Error_Handler();
   }
 
+  /* Initialize CAN driver */
   if (CanDrv_init()) {
       Error_Handler();
   }
 
+  /* Initialize application */
   if (App_init()) {
 	  Error_Handler();
   }
 
   /* Infinite loop */
   for(;;) {
-      osDelayUntil(&xLastWakeTime, 500);
+	  /* Wait a given interval */
+      osDelayUntil(&xLastWakeTime, CURRENT_FRAME_INTERVAL_MS);
 
       /* Read ADC channels */
       for (uint8_t channel=0; channel<CHANNEL_COUNT; channel++) {
@@ -786,26 +790,27 @@ void StartMeasurementTask(void const * argument)
 void StartFuseTask(void const * argument)
 {
   /* USER CODE BEGIN StartFuseTask */
-	float current;
+  float current;
 
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	/* Wait a given interval */
+	osDelay(FUSE_TASK_INTERVAL_MS);
 
-    /* Read ADC channels */
-    for (uint8_t ch=0; ch<CHANNEL_COUNT; ch++) {
-    	current = AdcDrv_readCurrent(ch);
+	/* Read ADC channels */
+	for (uint8_t ch=0; ch<CHANNEL_COUNT; ch++) {
+		current = AdcDrv_readCurrent(ch);
 
-    	/* Check if fuse current is exceeded */
-    	if (current > App_channels[ch].fuse_current) {
-    		/* Turn off channel */
-    		App_turnOffChannel(ch);
+		/* Check if fuse current is exceeded */
+		if (current > App_channels[ch].fuse_current) {
+			/* Turn off channel */
+			App_turnOffChannel(ch);
 
-        	/* Send fuse message to CAN bus */
-        	CanDrv_sendFuseMessage(ch);
-    	}
-    }
+			/* Send fuse message to CAN bus */
+			CanDrv_sendFuseMessage(ch);
+		}
+	}
   }
   /* USER CODE END StartFuseTask */
 }
@@ -824,6 +829,8 @@ void StartTestTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
+#ifdef TEST_MODE
+	  /* Write test function here */
 	  HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4, GPIO_PIN_RESET);
 	  *(App_channels[CH1].adc_value_ptr) = 0;
 	  *(App_channels[CH2].adc_value_ptr) = 0;
@@ -838,6 +845,10 @@ void StartTestTask(void const * argument)
 	  *(App_channels[CH4].adc_value_ptr) = 2000;
 	  *(App_channels[CH5].adc_value_ptr) = 2000;
 	  osDelay(100);
+#else
+	  /* Terminate this task */
+	  osThreadTerminate(NULL);
+#endif
   }
   /* USER CODE END StartTestTask */
 }
@@ -871,7 +882,13 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-
+	for(;;) {
+		/* Blink the red LED indicating an error */
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4, GPIO_PIN_SET);
+		HAL_Delay(100);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4, GPIO_PIN_RESET);
+		HAL_Delay(100);
+	}
   /* USER CODE END Error_Handler_Debug */
 }
 

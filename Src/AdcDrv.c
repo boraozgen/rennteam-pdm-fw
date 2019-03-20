@@ -10,21 +10,25 @@
 #include "main.h"
 #include "App.h"
 
+/* ADC handles */
 extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc2;
 extern ADC_HandleTypeDef hadc3;
 extern ADC_HandleTypeDef hadc4;
 
+/* DMA buffers */
 __IO uint16_t   ADC1ConvertedValues[ADC1_CH_COUNT];
 __IO uint16_t   ADC2ConvertedValues[ADC2_CH_COUNT];
 __IO uint16_t   ADC3ConvertedValues[ADC3_CH_COUNT];
 __IO uint16_t   ADC4ConvertedValues[ADC4_CH_COUNT];
 
+/* Channel configuration structs */
 extern App_channel_t App_channels[CHANNEL_COUNT];
 
 int AdcDrv_init(void)
 {
-#if 0
+#ifndef TEST_MODE
+	/* Start ADC in DMA mode */
 	if (HAL_OK !=  HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADC1ConvertedValues, ADC1_CH_COUNT)) {
 		return -1;
 	}

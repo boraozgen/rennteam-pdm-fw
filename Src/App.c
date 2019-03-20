@@ -19,37 +19,105 @@ int App_init(void)
 	App_channels[CH1].auto_retry = true;
 	App_channels[CH1].retry_time_ms = 1000;
 	App_channels[CH1].timer_def.ptimer = Timer_Callback;
-	App_channels[CH1].fuse_current = 10.0;
+	App_channels[CH1].fuse_current = 20.0;
 
 	App_channels[CH2].input_port = GPIOD;
 	App_channels[CH2].input_pin = GPIO_PIN_15;
 	App_channels[CH2].auto_retry = true;
-	App_channels[CH2].retry_time_ms = 750;
+	App_channels[CH2].retry_time_ms = 1000;
 	App_channels[CH2].timer_def.ptimer = Timer_Callback;
-	App_channels[CH2].fuse_current = 10.0;
+	App_channels[CH2].fuse_current = 20.0;
 
 	App_channels[CH3].input_port = GPIOA;
 	App_channels[CH3].input_pin = GPIO_PIN_9;
 	App_channels[CH3].auto_retry = true;
-	App_channels[CH3].retry_time_ms = 500;
+	App_channels[CH3].retry_time_ms = 1000;
 	App_channels[CH3].timer_def.ptimer = Timer_Callback;
-	App_channels[CH3].fuse_current = 10.0;
+	App_channels[CH3].fuse_current = 20.0;
 
 	App_channels[CH4].input_port = GPIOC;
 	App_channels[CH4].input_pin = GPIO_PIN_7;
 	App_channels[CH4].auto_retry = true;
-	App_channels[CH4].retry_time_ms = 250;
+	App_channels[CH4].retry_time_ms = 1000;
 	App_channels[CH4].timer_def.ptimer = Timer_Callback;
-	App_channels[CH4].fuse_current = 10.0;
+	App_channels[CH4].fuse_current = 20.0;
 
 	App_channels[CH5].input_port = GPIOC;
 	App_channels[CH5].input_pin = GPIO_PIN_9;
 	App_channels[CH5].auto_retry = true;
-	App_channels[CH5].retry_time_ms = 1250;
+	App_channels[CH5].retry_time_ms = 1000;
 	App_channels[CH5].timer_def.ptimer = Timer_Callback;
-	App_channels[CH5].fuse_current = 10.0;
+	App_channels[CH5].fuse_current = 20.0;
 
-	// TODO: add rest of the channels
+	App_channels[CH6].input_port = GPIOD;
+	App_channels[CH6].input_pin = GPIO_PIN_4;
+	App_channels[CH6].auto_retry = true;
+	App_channels[CH6].retry_time_ms = 1000;
+	App_channels[CH6].timer_def.ptimer = Timer_Callback;
+	App_channels[CH6].fuse_current = 10.0;
+
+	App_channels[CH7].input_port = GPIOD;
+	App_channels[CH7].input_pin = GPIO_PIN_5;
+	App_channels[CH7].auto_retry = true;
+	App_channels[CH7].retry_time_ms = 1000;
+	App_channels[CH7].timer_def.ptimer = Timer_Callback;
+	App_channels[CH7].fuse_current = 10.0;
+
+	App_channels[CH8].input_port = GPIOB;
+	App_channels[CH8].input_pin = GPIO_PIN_8;
+	App_channels[CH8].auto_retry = true;
+	App_channels[CH8].retry_time_ms = 1000;
+	App_channels[CH8].timer_def.ptimer = Timer_Callback;
+	App_channels[CH8].fuse_current = 10.0;
+
+	App_channels[CH9].input_port = GPIOE;
+	App_channels[CH9].input_pin = GPIO_PIN_0;
+	App_channels[CH9].auto_retry = true;
+	App_channels[CH9].retry_time_ms = 1000;
+	App_channels[CH9].timer_def.ptimer = Timer_Callback;
+	App_channels[CH9].fuse_current = 10.0;
+
+	App_channels[CH10].input_port = GPIOE;
+	App_channels[CH10].input_pin = GPIO_PIN_2;
+	App_channels[CH10].auto_retry = true;
+	App_channels[CH10].retry_time_ms = 1000;
+	App_channels[CH10].timer_def.ptimer = Timer_Callback;
+	App_channels[CH10].fuse_current = 10.0;
+
+	App_channels[CH11].input_port = GPIOE;
+	App_channels[CH11].input_pin = GPIO_PIN_3;
+	App_channels[CH11].auto_retry = true;
+	App_channels[CH11].retry_time_ms = 1000;
+	App_channels[CH11].timer_def.ptimer = Timer_Callback;
+	App_channels[CH11].fuse_current = 10.0;
+
+	App_channels[CH12].input_port = GPIOA;
+	App_channels[CH12].input_pin = GPIO_PIN_2;
+	App_channels[CH12].auto_retry = true;
+	App_channels[CH12].retry_time_ms = 1000;
+	App_channels[CH12].timer_def.ptimer = Timer_Callback;
+	App_channels[CH12].fuse_current = 5.0;
+
+	App_channels[CH13].input_port = GPIOA;
+	App_channels[CH13].input_pin = GPIO_PIN_3;
+	App_channels[CH13].auto_retry = true;
+	App_channels[CH13].retry_time_ms = 1000;
+	App_channels[CH13].timer_def.ptimer = Timer_Callback;
+	App_channels[CH13].fuse_current = 5.0;
+
+	App_channels[CH14].input_port = GPIOA;
+	App_channels[CH14].input_pin = GPIO_PIN_5;
+	App_channels[CH14].auto_retry = true;
+	App_channels[CH14].retry_time_ms = 1000;
+	App_channels[CH14].timer_def.ptimer = Timer_Callback;
+	App_channels[CH14].fuse_current = 5.0;
+
+	App_channels[CH15].input_port = GPIOA;
+	App_channels[CH15].input_pin = GPIO_PIN_4;
+	App_channels[CH15].auto_retry = true;
+	App_channels[CH15].retry_time_ms = 1000;
+	App_channels[CH15].timer_def.ptimer = Timer_Callback;
+	App_channels[CH15].fuse_current = 5.0;
 
 	/* Initialize always-on channels */
 	/*Configure GPIO pin Output Level */
@@ -79,7 +147,6 @@ int App_init(void)
 int App_turnOffChannel(uint8_t ch)
 {
 	/* Turn off channel input */
-
 	HAL_GPIO_WritePin(
 			App_channels[ch].input_port,
 			App_channels[ch].input_pin,
@@ -99,7 +166,7 @@ void Timer_Callback (void const *arg) {
 
 	/* Turn on channel input */
 	HAL_GPIO_WritePin(
-				App_channels[ch].input_port,
-				App_channels[ch].input_pin,
-				GPIO_PIN_SET);
+			App_channels[ch].input_port,
+			App_channels[ch].input_pin,
+			GPIO_PIN_SET);
 }

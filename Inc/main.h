@@ -81,7 +81,8 @@ void Error_Handler(void);
 #define VBAT_VOLTAGE_PIN_Pin GPIO_PIN_0
 #define VBAT_VOLTAGE_PIN_GPIO_Port GPIOC
 /* USER CODE BEGIN Private defines */
-
+/* Enables test task, disables AdcDrv */
+//#define TEST_MODE
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
