@@ -55,7 +55,7 @@
 #include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
+/* USER CODE BEGIN Includes */     
 #include "AdcDrv.h"
 #include "CanDrv.h"
 #include "App.h"
@@ -231,7 +231,7 @@ void StartFuseTask(void const * argument)
 		/* Check if fuse current is exceeded */
 		if (current > App_channels[ch].fuse_current) {
 			/* Turn off channel */
-			App_turnOffChannel(ch);
+			App_triggerFuse(ch);
 
 			/* Send fuse message to CAN bus */
 			CanDrv_sendFuseMessage(ch);

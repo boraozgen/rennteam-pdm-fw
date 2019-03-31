@@ -40,6 +40,8 @@ typedef struct {
 } App_channel_t;
 
 int App_init(void);
+int App_triggerFuse(uint8_t ch);
 int App_turnOffChannel(uint8_t ch);
+int App_turnOnChannel(uint8_t ch);
 
 #endif /* APP_H_ */

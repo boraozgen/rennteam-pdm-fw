@@ -34,6 +34,10 @@
 /* Event frame defines */
 #define CANDRV_EVENT_TYPE_FUSE	0
 
+/* Receiver defines */
+#define CANDRV_PDM_CTRL_ID		0x0050
+#define CANDRV_PDM_CTRL_MASK	0xFFFF
+
 int CanDrv_init(void);
 int CanDrv_sendCurrentFrameA(uint8_t* currentFrameA_data);
 int CanDrv_sendCurrentFrameB(uint8_t* currentFrameB_data);
