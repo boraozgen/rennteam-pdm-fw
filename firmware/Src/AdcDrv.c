@@ -117,6 +117,35 @@ float AdcDrv_readCurrent(uint8_t ch)
 	// TODO: use Vrefint measurement instead of VREF?
 	floatVal = ((float)adcVal * ADC_VREF * App_channels[ch].k_factor) / (App_channels[ch].r_sense * 4095.0F);
 
+	/* Dirty fix calibration */
+	// TODO: find error source and fix
+	switch (ch) {
+	// Big channels
+	case CH1:
+	case CH2:
+	case CH3:
+	case CH4:
+	case CH5:
+		floatVal += 0.5;
+		break;
+	// Middle channels
+	case CH6:
+	case CH7:
+	case CH8:
+	case CH9:
+	case CH10:
+	case CH11:
+		floatVal += 0.4;
+		break;
+	// Small channels
+	case CH12:
+	case CH13:
+	case CH14:
+	case CH15:
+		floatVal += 0.1;
+		break;
+	}
+
 	return floatVal;
 }
 

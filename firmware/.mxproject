@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/Papa Motec/Atollic Projects/pdm-fw/Inc
+HeaderPath=C:/Users/Bora/Atollic/TrueSTUDIO/STM32_workspace_9.3/pdm-fw/firmware/Inc
 HeaderFiles=stm32f3xx_it.h;stm32f3xx_hal_conf.h;main.h;FreeRTOSConfig.h;gpio.h;adc.h;can.h;dma.h;
-SourcePath=C:/Users/Papa Motec/Atollic Projects/pdm-fw/Src
+SourcePath=C:/Users/Bora/Atollic/TrueSTUDIO/STM32_workspace_9.3/pdm-fw/firmware/Src
 SourceFiles=stm32f3xx_it.c;stm32f3xx_hal_msp.c;stm32f3xx_hal_timebase_tim.c;main.c;freertos.c;gpio.c;adc.c;can.c;dma.c;
 
 [PreviousLibFiles]
