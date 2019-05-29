@@ -9,6 +9,7 @@
 #include "stm32f3xx_hal.h"
 #include "main.h"
 #include "App.h"
+#include <math.h>
 
 /* ADC handles */
 extern ADC_HandleTypeDef hadc1;
@@ -118,7 +119,9 @@ float AdcDrv_readCurrent(uint8_t ch)
 	floatVal = ((float)adcVal * ADC_VREF * App_channels[ch].k_factor) / (App_channels[ch].r_sense * 4095.0F);
 
 	/* Dirty fix calibration */
-	// TODO: find error source and fix
+	// TODO: find error source and fix -> ADC cannot convert <0.06V
+	/* Curve calibration by testing */
+	// TODO: add channel type parameter instead of channel switch?
 	switch (ch) {
 	// Big channels
 	case CH1:
@@ -126,7 +129,8 @@ float AdcDrv_readCurrent(uint8_t ch)
 	case CH3:
 	case CH4:
 	case CH5:
-		floatVal += 0.5;
+		floatVal += pow(floatVal, 3) / 1000; // Curve
+		floatVal += 0.5; // ADC offset
 		break;
 	// Middle channels
 	case CH6:
@@ -135,14 +139,16 @@ float AdcDrv_readCurrent(uint8_t ch)
 	case CH9:
 	case CH10:
 	case CH11:
-		floatVal += 0.4;
+		floatVal += pow(floatVal, 3) / 300; // Curve
+		floatVal += 0.3; // ADC offset
 		break;
 	// Small channels
 	case CH12:
 	case CH13:
 	case CH14:
 	case CH15:
-		floatVal += 0.1;
+		floatVal += pow(floatVal, 9) / 400; // Curve
+		floatVal += 0.1; // ADC offset
 		break;
 	}
 
