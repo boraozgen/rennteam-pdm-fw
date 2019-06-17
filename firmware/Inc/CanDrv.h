@@ -35,7 +35,7 @@
 #define CANDRV_EVENT_TYPE_FUSE	0
 
 /* Receiver defines */
-#define CANDRV_PDM_CTRL_ID		0x0060
+#define CANDRV_PDM_CTRL_ID		0x0080
 #define CANDRV_PDM_CTRL_MASK	0xFFFF
 
 int CanDrv_init(void);
