@@ -235,6 +235,8 @@ void StartFuseTask(void const * argument)
 
 			/* Send fuse message to CAN bus */
 			CanDrv_sendFuseMessage(ch);
+
+			// TODO: change status
 		}
 	}
   }

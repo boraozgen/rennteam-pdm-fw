@@ -23,19 +23,19 @@
 
 #define CH1_FUSE_CURRENT		15.0F	// Water Fan L
 #define CH2_FUSE_CURRENT		15.0F	// Water Fan R
-#define CH3_FUSE_CURRENT		10.0F	// Water Pump L+R
-#define CH4_FUSE_CURRENT		15.0F	// Servos
-#define CH5_FUSE_CURRENT		20.0F	// Ignition + Injection
+#define CH3_FUSE_CURRENT		15.0F	// Schwimmwinkel
+#define CH4_FUSE_CURRENT		20.0F	// Servos + Test Lambdas
+#define CH5_FUSE_CURRENT		20.0F	// Ignition + Injection + Fuel Pump
 #define CH6_FUSE_CURRENT		5.0F	// LTC
 #define CH7_FUSE_CURRENT		5.0F	// ECU
 #define CH8_FUSE_CURRENT		5.0F	// Sensors 12V
-#define CH9_FUSE_CURRENT		10.0F	// Oil Fan
-#define CH10_FUSE_CURRENT		5.0F	// Not used
+#define CH9_FUSE_CURRENT		15.0F	// Oil Fan
+#define CH10_FUSE_CURRENT		5.0F	// Display (temporary)
 #define CH11_FUSE_CURRENT		5.0F	// Not used
-#define CH12_FUSE_CURRENT		5.0F	// Not used
-#define CH13_FUSE_CURRENT		5.0F	// Not used
-#define CH14_FUSE_CURRENT		5.0F	// Not used
-#define CH15_FUSE_CURRENT		5.0F	// Not used
+#define CH12_FUSE_CURRENT		5.0F	// Water Pump L
+#define CH13_FUSE_CURRENT		5.0F	// Water Pump R
+#define CH14_FUSE_CURRENT		5.0F	// Test Kurbelwellendruck
+#define CH15_FUSE_CURRENT		5.0F	// Beacon
 
 /* Enumeration to map channels to n-1 for optimal array usage */
 enum {
