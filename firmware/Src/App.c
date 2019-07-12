@@ -72,7 +72,7 @@ int App_init(void)
 
 	App_channels[CH9].input_port = GPIOE;
 	App_channels[CH9].input_pin = GPIO_PIN_0;
-	App_channels[CH9].auto_retry = false;
+	App_channels[CH9].auto_retry = true;
 	App_channels[CH9].retry_time_ms = 1000;
 	App_channels[CH9].timer_def.ptimer = Timer_Callback;
 	App_channels[CH9].fuse_current = CH9_FUSE_CURRENT;
