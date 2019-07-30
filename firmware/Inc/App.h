@@ -21,8 +21,8 @@
 #define CURRENT_FRAME_INTERVAL_MS	100
 #define FUSE_TASK_INTERVAL_MS		1
 
-#define CH1_FUSE_CURRENT		15.0F	// Water Fan L
-#define CH2_FUSE_CURRENT		15.0F	// Water Fan R
+#define CH1_FUSE_CURRENT		20.0F	// Water Fan L
+#define CH2_FUSE_CURRENT		20.0F	// Water Fan R
 #define CH3_FUSE_CURRENT		15.0F	// Schwimmwinkel
 #define CH4_FUSE_CURRENT		20.0F	// Servos + Test Lambdas
 #define CH5_FUSE_CURRENT		20.0F	// Ignition + Injection + Fuel Pump

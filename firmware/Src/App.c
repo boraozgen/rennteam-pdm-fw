@@ -16,14 +16,14 @@ int App_init(void)
 	/* Initialize channel structs */
 	App_channels[CH1].input_port = GPIOC;
 	App_channels[CH1].input_pin = GPIO_PIN_11;
-	App_channels[CH1].auto_retry = false;
+	App_channels[CH1].auto_retry = true;
 	App_channels[CH1].retry_time_ms = 1000;
 	App_channels[CH1].timer_def.ptimer = Timer_Callback;
 	App_channels[CH1].fuse_current = CH1_FUSE_CURRENT;
 
 	App_channels[CH2].input_port = GPIOA;
 	App_channels[CH2].input_pin = GPIO_PIN_9;
-	App_channels[CH2].auto_retry = false;
+	App_channels[CH2].auto_retry = true;
 	App_channels[CH2].retry_time_ms = 1000;
 	App_channels[CH2].timer_def.ptimer = Timer_Callback;
 	App_channels[CH2].fuse_current = CH2_FUSE_CURRENT;
